@@ -2,6 +2,7 @@ import requests
 import time
 import json
 
+
 # Documentation of AmplitudeHTTP API:
 #   https://amplitude.zendesk.com/hc/en-us/articles/204771828
 #
@@ -23,13 +24,13 @@ class AmplitudeLogger:
     def turn_off_logging(self):
         self.is_logging = False
 
-    def _is_None_or_not_str(self,value):
+    def _is_None_or_not_str(self, value):
         if value is None or type(value) is not str:
             return True
 
     def create_event(self,**kwargs):
         event = {}
-        user_id = kwargs.get('user_id',None)
+        user_id = kwargs.get('user_id', None)
         device_id = kwargs.get('device_id', None)
         if self._is_None_or_not_str(user_id) and self._is_None_or_not_str(device_id):
             return None
@@ -49,33 +50,35 @@ class AmplitudeLogger:
 
         event["event_type"] = event_type
 
-        # integer epoch time in milliseconds
-        event["time"] = int(time.time()*1000)
+        # integer epoch time in milliseconds 
+        event["time"] = int(time.time() * 1000)
+
+        # add session id
+        session_id = kwargs.get('session_id', None)
+        if session_id and session_id is int:
+            event["session_id"] = session_id
 
         event_properties = kwargs.get('event_properties', None)
         if event_properties is not None and type(event_properties) == dict:
             event["event_properties"] = event_properties
 
-
         event_package = [
             ('api_key', self.api_key),
             ('event', json.dumps([event])),
-            ]
+        ]
 
-        #print(event_package)
+        # print(event_package)
 
         # ++ many other properties
         # details: https://amplitude.zendesk.com/hc/en-us/articles/204771828-HTTP-API
         return event_package
 
+    # data = [
+    #  ('api_key', 'SOMETHINGSOMETHING'),
+    #  ('event', '[{"device_id":"foo@bar", "event_type":"testing_tutorial", "user_properties":{"Cohort":"Test A"}, "country":"United States", "ip":"127.0.0.1", "time":1396381378123}]'),
+    # ]
 
-#data = [
-#  ('api_key', 'SOMETHINGSOMETHING'),
-#  ('event', '[{"device_id":"foo@bar", "event_type":"testing_tutorial", "user_properties":{"Cohort":"Test A"}, "country":"United States", "ip":"127.0.0.1", "time":1396381378123}]'),
-#]
-
-
-    def log_event(self,event):
+    def log_event(self, event):
         if event is not None and type(event) == list:
             if self.is_logging:
                 result = requests.post(self.api_uri, data=event)
