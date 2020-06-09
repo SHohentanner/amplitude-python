@@ -61,6 +61,13 @@ class AmplitudeLogger:
         event_properties = kwargs.get('event_properties', None)
         if event_properties is not None and type(event_properties) == dict:
             event["event_properties"] = event_properties
+            
+
+        revenue_properties = kwargs.get('revenue_properties', None)
+        if revenue_properties is not None and type(revenue_properties) == dict:
+            event["revenue"] = revenue_properties["revenue"]
+            event["price"] = revenue_properties["price"]
+            event["quantity"] = revenue_properties["quantity"]
 
         event_package = [
             ('api_key', self.api_key),
