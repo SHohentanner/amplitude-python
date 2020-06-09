@@ -31,7 +31,8 @@ class AmplitudeLoggerTest(testtools.TestCase):
 			"revenue_properties": {
 				"price": 5.0,
 				"quantity": 1,
-				"revenue": 5.0
+				"revenue": 5.0,
+				"revenueType": "impression"
 			},
 			"user_properties": {
 				"email": "foo@bar.co"

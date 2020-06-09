@@ -68,6 +68,7 @@ class AmplitudeLogger:
             event["revenue"] = revenue_properties["revenue"]
             event["price"] = revenue_properties["price"]
             event["quantity"] = revenue_properties["quantity"]
+            event["revenueType"] = revenue_properties["revenueType"]
 
         event_package = [
             ('api_key', self.api_key),
